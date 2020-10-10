@@ -2,6 +2,8 @@ const Router = require('koa-router');
 const siteEntry = require('../controller/home');
 const form = require('../controller/form');
 const upload = require('../controller/upload');
+const listUsers = require('../controller/listUsers');
+const app = require('..');
 
 const home = new Router();
 home.get('/', siteEntry);
@@ -9,6 +11,7 @@ home.get('/', siteEntry);
 const api = new Router();
 api.post('/', form);
 api.post('/upload', upload);
+api.get('/listUsers', listUsers);
 
 
 const page = new Router();

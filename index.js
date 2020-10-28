@@ -6,10 +6,10 @@ const jsonp = require('koa-jsonp')
 const app = new Koa();
 const logger = require('./middleware/logger');
 const router = require('./router');
-const {query} = require('./db/util/db');
+// const { query } = require('./db/util/db');
 
 // session login；ejs；
-app.use(static(path.join(__dirname,  './static'))); // need to view sourse
+app.use(static(path.join(__dirname, './static'))); // need to view sourse
 app.use(logger());
 app.use(bodyParser());
 app.use(jsonp());

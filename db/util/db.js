@@ -1,32 +1,29 @@
-const mysql = require('mysql')
+const mysql = require('mysql'); // 文档
 
 const pool = mysql.createPool({
-  host     :  'localhost',
-  user     :  'root',
-  password :  'sql123456',
-  database :  'koa_demo'
+  host: '134.175.49.243',
+  user: 'root',
+  password: 'SQL_pwd123456',
+  database: 'net'
 })
 
-let query = function( sql, values ) {
-
-  return new Promise(( resolve, reject ) => {
-    pool.getConnection(function(err, connection) {
+const query = (sql, values) => {
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
       if (err) {
-        reject( err )
+        reject(err)
       } else {
-        connection.query(sql, values, ( err, rows) => {
-
-          if ( err ) {
-            reject( err )
+        connection.query(sql, values, (err, rows) => {
+          if (err) {
+            reject(err)
           } else {
-            resolve( rows )
+            resolve(rows)
           }
           connection.release()
-        })
+        });
       }
-    })
-  })
-
+    });
+  });
 }
 
 

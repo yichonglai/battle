@@ -1,5 +1,5 @@
 const getSqlContentMap = require('./util/getSqlContentMap');
-const { query } = require('./util/db');
+const { query } = require('./util/dbUtil');
 
 
 // 打印脚本执行日志

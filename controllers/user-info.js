@@ -9,7 +9,6 @@ module.exports = {
    */
   async signIn(ctx) {
     const formData = ctx.request.body;
-    console.log('======', formData, formData.source)
     let result = {
       success: false,
       message: '',
@@ -17,24 +16,15 @@ module.exports = {
       code: ''
     };
     const userResult = await userInfoService.signIn(formData);
-
     if (userResult) {
-      if (formData.userName === userResult.name) {
-        result.success = true;
-      } else {
-        result.message = userCode.FAIL_USER_NAME_OR_PASSWORD_ERROR;
-        result.code = 'FAIL_USER_NAME_OR_PASSWORD_ERROR';
-      }
-    } else {
-      result.code = 'FAIL_USER_NO_EXIST';
-      result.message = userCode.FAIL_USER_NO_EXIST;
-    }
-
-    if (result.success) {
-      let session = ctx.session;
+      result.success = true;
+      const session = ctx.session;
       session.isLogin = true;
       session.userName = userResult.name;
       session.userId = userResult.id;
+    } else {
+      result.message = userCode.FAIL_USER_NAME_OR_PASSWORD_ERROR;
+      result.code = 'FAIL_USER_NAME_OR_PASSWORD_ERROR';
     }
     ctx.body = result;
   },
@@ -54,23 +44,19 @@ module.exports = {
     const validateResult = userInfoService.validatorSignUp(formData);
 
     if (!validateResult.success) {
-      result = validateResult;
+      result.message = validateResult.message;
       ctx.body = result;
       return
     }
-
     const existOne = await userInfoService.getExistOne(formData);
     if (existOne) {
       if (existOne.name === formData.userName) {
         result.message = userCode.FAIL_USER_NAME_IS_EXIST;
-        ctx.body = result;
-        return;
-      }
-      if (existOne.email === formData.email) {
+      } else if (existOne.email === formData.email) {
         result.message = userCode.FAIL_EMAIL_IS_EXIST;
-        ctx.body = result;
-        return;
       }
+      ctx.body = result;
+      return;
     }
 
     const userResult = await userInfoService.create({
@@ -94,7 +80,7 @@ module.exports = {
    * @param    {obejct} ctx 上下文对象
    */
   async getLoginUserInfo(ctx) {
-    const { isLogin, userName } = ctx.session;
+    const { isLogin, userId } = ctx.session;
     console.log(ctx.session)
     let result = {
       success: false,
@@ -102,8 +88,8 @@ module.exports = {
       data: null,
     };
 
-    if (isLogin && userName) {
-      const userInfo = await userInfoService.getUserInfoByUserName(userName);
+    if (isLogin && userId) {
+      const userInfo = await userInfoService.getUserInfoByUserName(userId);
       if (userInfo) {
         result.data = userInfo;
         result.success = true;

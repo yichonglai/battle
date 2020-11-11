@@ -24,11 +24,11 @@ module.exports = {
    * @return {object|null}      查找结果
    */
   async getExistOne(formData) {
-    const resultData = await userModel.getExistOne({
-      'email': formData.email,
-      'name': formData.userName
+    const res = await userModel.getExistOne({
+      email: formData.email,
+      name: formData.userName
     });
-    return resultData;
+    return res;
   },
 
   /**
@@ -46,20 +46,13 @@ module.exports = {
 
 
   /**
-   * 根据用户名查找用户业务操作
-   * @param  {string} userName 用户名
+   * 根据用户ID查找用户业务操作
+   * @param  {string} userId 用户ID
    * @return {object|null}     查找结果
    */
-  async getUserInfoByUserName(userName) {
-    const resultData = await userModel.getUserInfoByUserName(userName) || {}
-    const userInfo = {
-      // id: resultData.id,
-      email: resultData.email,
-      userName: resultData.name,
-      detailInfo: resultData.detail_info,
-      createTime: resultData.create_time
-    };
-    return userInfo;
+  async getUserInfoByUserName(userId) {
+    const resultData = await userModel.getUserInfoByUserName(userId)
+    return resultData;
   },
 
 
@@ -69,29 +62,22 @@ module.exports = {
    * @return {object}          校验结果
    */
   validatorSignUp(userInfo) {
-    let result = {
+    const result = {
       success: false,
       message: '',
     }
 
     if (!/[a-z0-9\_\-]{6,16}/.test(userInfo.userName)) {
       result.message = userCode.ERROR_USER_NAME;
-      return result;
-    }
-    if (!validator.isEmail(userInfo.email)) {
+    } else if (!validator.isEmail(userInfo.email)) {
       result.message = userCode.ERROR_EMAIL;
-      return result;
-    }
-    if (!/[\w+]{6,16}/.test(userInfo.password)) {
+    } else if (!/[\w+]{6,16}/.test(userInfo.password)) {
       result.message = userCode.ERROR_PASSWORD;
-      return result;
-    }
-    if (userInfo.password !== userInfo.confirmPassword) {
+    } else if (userInfo.password !== userInfo.confirmPassword) {
       result.message = userCode.ERROR_PASSWORD_CONFORM;
-      return result;
     }
+    if (result.message) return result;
     result.success = true;
     return result;
   }
-
 }

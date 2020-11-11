@@ -30,7 +30,7 @@ const createTable = (sql) => {
 
 const findDataById = (table, id) => {
   const _sql = "SELECT * FROM ?? WHERE id = ? ";
-  return query(_sql, [table, id, start, end]);
+  return query(_sql, [table, id]);
 }
 
 

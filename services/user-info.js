@@ -50,8 +50,8 @@ module.exports = {
    * @param  {string} userId 用户ID
    * @return {object|null}     查找结果
    */
-  async getUserInfoByUserName(userId) {
-    const resultData = await userModel.getUserInfoByUserName(userId)
+  async getUserInfoByUserId(userId) {
+    const resultData = await userModel.getUserInfoByUserId(userId)
     return resultData;
   },
 

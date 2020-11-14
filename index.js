@@ -15,6 +15,10 @@ const app = new Koa();
 // 配置session中间件
 app.use(session({
   key: 'SESSION_ID',
+  cookie: {
+    // maxAge: 1000 * 60 * 60 * 24,
+    httpOnly: true,
+  },
   store: new MysqlStore(baseConfig.database)
 }));
 // ejs；

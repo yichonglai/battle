@@ -53,7 +53,7 @@ module.exports = {
    * @param  {string} userId 用户ID
    * @return {object|null}     查找结果
    */
-  async getUserInfoByUserName(userId) {
+  async getUserInfoByUserId(userId) {
     let result = await dbUtils.findDataById('user_info', userId);
     if (Array.isArray(result) && result.length > 0) {
       return result[0];

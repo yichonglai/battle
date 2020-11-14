@@ -81,7 +81,6 @@ module.exports = {
    */
   async getLoginUserInfo(ctx) {
     const { isLogin, userId } = ctx.session;
-    console.log(ctx.session)
     let result = {
       success: false,
       message: '',
@@ -89,13 +88,15 @@ module.exports = {
     };
 
     if (isLogin && userId) {
-      const userInfo = await userInfoService.getUserInfoByUserName(userId);
+      const userInfo = await userInfoService.getUserInfoByUserId(userId);
       if (userInfo) {
         result.data = userInfo;
         result.success = true;
       } else {
         result.message = userCode.FAIL_USER_NO_LOGIN;
       }
+    } else {
+      result.message = userCode.FAIL_USER_NO_LOGIN;
     }
     ctx.body = result;
   },

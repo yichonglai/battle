@@ -105,19 +105,19 @@ module.exports = {
    * 校验用户是否登录
    * @param  {obejct} ctx 上下文对象
    */
-  validateLogin(ctx) {
-    let result = {
+  async validateLogin(ctx) {
+    const { isLogin } = ctx.session;
+    const result = {
       success: false,
       message: userCode.FAIL_USER_NO_LOGIN,
       data: null,
       code: 'FAIL_USER_NO_LOGIN',
+    };
+    if (isLogin) {
+      result.success = true;
+      result.message = '';
+      result.code = '';
     }
-    let session = ctx.session
-    if (session && session.isLogin === true) {
-      result.success = true
-      result.message = ''
-      result.code = ''
-    }
-    return result
+    return ctx.body = result;
   }
 }

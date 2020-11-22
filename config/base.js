@@ -1,3 +1,4 @@
+const path = require('path');
 module.exports = {
   port: 3001,
   database: {
@@ -5,5 +6,6 @@ module.exports = {
     user: 'root',
     password: 'SQL_pwd123456',
     database: 'net'
-  }
+  },
+  rootDir: path.resolve(__dirname, '..')
 };

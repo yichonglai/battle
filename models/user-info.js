@@ -36,14 +36,16 @@ module.exports = {
    * @return {object|null}         查找结果
    */
   async getOneByUserNameAndPassword(options) {
-    const _sql = `
-    SELECT * from user_info
-      where password="${options.password}" and name="${options.name}"
-      limit 1`;
-    const result = await dbUtils.query(_sql);
-    if (Array.isArray(result) && result.length > 0) {
-      return result[0];
-    } else {
+    const _sql = `SELECT * from user_info where password="${options.password}" and name="${options.name}" limit 1`;
+    const _sql_name = `SELECT * from user_info where name="${options.name}" limit 1`;
+    try {
+      const result = await dbUtils.query(_sql);
+      if (Array.isArray(result) && result.length > 0) {
+        return result[0];
+      } else {
+        return null;
+      }
+    } catch (error) {
       return null;
     }
   },

@@ -128,12 +128,22 @@ module.exports = {
    * @param  {obejct} ctx 上下文对象
    */
   async validateLogin(ctx) {
-    const { isLogin } = ctx.session;
+    let { userId } = ctx.session;
+    const { token } = ctx.request.body;
+    if (token) {
+      const privateKey = fs.readFileSync(path.join(baseConfig.rootDir, 'token.private.key'));
+      try {
+        userId = jwt.verify(token, privateKey).userId;
+      } catch (error) {
+        userId = '';
+      }
+    }
+
     const responseObj = responseTemplate({
       message: userCode.FAIL_USER_NO_LOGIN,
       code: 'FAIL_USER_NO_LOGIN',
     });
-    if (isLogin) {
+    if (userId) {
       responseObj.success = true;
       responseObj.message = '';
       responseObj.code = '';

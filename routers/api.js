@@ -7,7 +7,7 @@ const userInfoController = require('../controllers/user-info');
 
 const routers = router
   .post('/user/getUserInfo', userInfoController.getLoginUserInfo)
-  .get('/user/checkLoginStatus', userInfoController.validateLogin)
+  .post('/user/checkLogin', userInfoController.validateLogin)
   .post('/user/signIn', userInfoController.signIn)
   .post('/user/signUp', userInfoController.signUp)
 
